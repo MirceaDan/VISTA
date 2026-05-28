@@ -19,19 +19,21 @@ import torchvision.models as models
 # CONFIG
 # =========================================================
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-IMG_SIZE = 640
-BATCH_SIZE = 2
-EPOCHS = 100
-LR = 1e-4
+IMG_SIZE = 512
+BATCH_SIZE = 1
+EPOCHS = 30
+LR = 1e-5
 NUM_CLASSES = 1
-NUM_QUERIES = 100
+NUM_QUERIES = 25
 MAX_OBJECTS = 64
 EPS = 1e-6
 GRU_HIDDEN = 32
 D_MODEL = 256
 NHEADS = 8
-NUM_ENCODER_LAYERS = 6
-NUM_DECODER_LAYERS = 6
+NUM_ENCODER_LAYERS = 3
+NUM_DECODER_LAYERS = 3
+FLOW_ALPHA = 0.35
+STATICNESS_LAMBDA = 5.0
 DATASET_PATH = "./dataset"
 TRAIN_PATH = os.path.join(
     DATASET_PATH,
@@ -41,7 +43,7 @@ TEST_PATH = os.path.join(
     DATASET_PATH,
     "test"
 )
-MODEL_SAVE_PATH = "./vista_motion_detr.pth"
+MODEL_SAVE_PATH = "./vistadetr_best.pth"
 
 # =========================================================
 # TRANSFORMS
@@ -88,7 +90,9 @@ def load_yolo_labels(label_path):
             w,
             h
         ])
+
     return boxes
+
 
 def compute_motion_features(curr_box, prev_box):
     x, y, w, h = curr_box
@@ -101,6 +105,10 @@ def compute_motion_features(curr_box, prev_box):
         (area + EPS) /
         (prev_area + EPS)
     )
+    velocity = math.sqrt(
+        dx * dx +
+        dy * dy
+    )
     return np.array([
         x,
         y,
@@ -109,12 +117,12 @@ def compute_motion_features(curr_box, prev_box):
         dx,
         dy,
         growth
-    ], dtype=np.float32)
+    ], dtype=np.float32), velocity
 
 # =========================================================
 # DATASET
 # =========================================================
-class VistaMotionDETRDataset(Dataset):
+class VistaDETRDataset(Dataset):
     def __init__(
         self,
         dataset_path,
@@ -129,7 +137,6 @@ class VistaMotionDETRDataset(Dataset):
                 f.endswith(".png")
             ):
                 self.images.append(f)
-
         self.images.sort()
 
     def __len__(self):
@@ -143,7 +150,6 @@ class VistaMotionDETRDataset(Dataset):
         img = cv2.imread(path)
         if img is None:
             raise RuntimeError(path)
-
         rgb = cv2.cvtColor(
             img,
             cv2.COLOR_BGR2RGB
@@ -198,6 +204,7 @@ class VistaMotionDETRDataset(Dataset):
             dtype=torch.float32
         )
         flow = flow.permute(2,0,1)
+
         return flow
 
     def __getitem__(self, idx):
@@ -217,6 +224,7 @@ class VistaMotionDETRDataset(Dataset):
         )
         motion_features = []
         targets = []
+        velocities = []
         num_boxes = min(
             len(labels_t),
             len(labels_prev),
@@ -225,11 +233,12 @@ class VistaMotionDETRDataset(Dataset):
         for i in range(num_boxes):
             cls, x, y, w, h = labels_t[i]
             _, px, py, pw, ph = labels_prev[i]
-            mf = compute_motion_features(
+            mf, velocity = compute_motion_features(
                 [x, y, w, h],
                 [px, py, pw, ph]
             )
             motion_features.append(mf)
+            velocities.append(velocity)
             targets.append([
                 cls,
                 x,
@@ -246,6 +255,15 @@ class VistaMotionDETRDataset(Dataset):
                 (1,5),
                 dtype=np.float32
             )
+            velocities = [0.0]
+
+        staticness_gt = []
+        for v in velocities:
+            s = math.exp(
+                -STATICNESS_LAMBDA * v
+            )
+            staticness_gt.append([s])
+
         motion_features = torch.tensor(
             motion_features,
             dtype=torch.float32
@@ -254,12 +272,17 @@ class VistaMotionDETRDataset(Dataset):
             targets,
             dtype=torch.float32
         )
+        staticness_gt = torch.tensor(
+            staticness_gt,
+            dtype=torch.float32
+        )
         return (
             curr_img,
             prev_img,
             flow,
             motion_features,
-            targets
+            targets,
+            staticness_gt
         )
 
 # =========================================================
@@ -271,18 +294,22 @@ def collate_fn(batch):
     flows = []
     motions = []
     targets = []
-    for img, prev, flow, motion, target in batch:
+    staticness = []
+    for img, prev, flow, motion, target, s in batch:
         imgs.append(img)
         prevs.append(prev)
         flows.append(flow)
         motions.append(motion)
         targets.append(target)
+        staticness.append(s)
+
     return (
         torch.stack(imgs),
         torch.stack(prevs),
         torch.stack(flows),
         motions,
-        targets
+        targets,
+        staticness
     )
 
 # =========================================================
@@ -374,7 +401,7 @@ class FlowAttentionFusion(nn.Module):
         )
         flow = self.flow_proj(flow)
         A = self.attn(flow)
-        feat = feat * (1.0 + A)
+        feat = feat + FLOW_ALPHA * feat * A
         return feat
 
 # =========================================================
@@ -451,6 +478,11 @@ class DETRHead(nn.Module):
             D_MODEL,
             1
         )
+        self.flow_bias_proj = nn.Conv2d(
+            256,
+            D_MODEL,
+            1
+        )
         self.position = PositionEmbedding(
             D_MODEL
         )
@@ -476,14 +508,26 @@ class DETRHead(nn.Module):
             nn.Linear(D_MODEL, 4)
         )
 
-    def forward(self, feat):
+    def forward(
+        self,
+        feat,
+        flow_feat
+    ):
         B = feat.shape[0]
         feat = self.input_proj(feat)
+        flow_bias = self.flow_bias_proj(
+            flow_feat
+        )
+        flow_bias = F.interpolate(
+            flow_bias,
+            size=feat.shape[-2:],
+            mode="bilinear",
+            align_corners=False
+        )
         pos = self.position(feat).to(
             feat.device
         )
-        src = feat + pos
-        H, W = src.shape[-2:]
+        src = feat + pos + flow_bias
         src = src.flatten(2).permute(2,0,1)
         query = self.query_embed.weight.unsqueeze(1)
         query = query.repeat(1,B,1)
@@ -497,15 +541,17 @@ class DETRHead(nn.Module):
         pred_boxes = torch.sigmoid(
             self.bbox_embed(hs)
         )
+
         return pred_logits, pred_boxes
 
 # =========================================================
-# VISTA MOTION DETR
+# VISTA DETR
 # =========================================================
-class VISTA_MOTION_DETR(nn.Module):
+class VISTA_DETR(nn.Module):
     def __init__(self):
         super().__init__()
         self.backbone = ResNet18Backbone()
+        self.backbone.requires_grad_(False)
         self.flow_encoder = FlowEncoder()
         self.flow_fusion = FlowAttentionFusion()
         self.motion_encoder = MotionGRU()
@@ -539,7 +585,8 @@ class VISTA_MOTION_DETR(nn.Module):
             staticness_scores
         )
         pred_logits, pred_boxes = self.detr(
-            feat
+            feat,
+            flow_feat
         )
         gate = staticness_scores.view(
             B,
@@ -554,51 +601,137 @@ class VISTA_MOTION_DETR(nn.Module):
         }
 
 # =========================================================
+# GIOU
+# =========================================================
+def box_cxcywh_to_xyxy(x):
+    cx, cy, w, h = x.unbind(-1)
+    b = [
+        cx - 0.5 * w,
+        cy - 0.5 * h,
+        cx + 0.5 * w,
+        cy + 0.5 * h
+    ]
+
+    return torch.stack(b, dim=-1)
+
+
+def generalized_iou(boxes1, boxes2):
+    x1 = torch.max(boxes1[:,0], boxes2[:,0])
+    y1 = torch.max(boxes1[:,1], boxes2[:,1])
+    x2 = torch.min(boxes1[:,2], boxes2[:,2])
+    y2 = torch.min(boxes1[:,3], boxes2[:,3])
+    inter = (x2 - x1).clamp(min=0) * (
+        y2 - y1
+    ).clamp(min=0)
+    area1 = (
+        (boxes1[:,2] - boxes1[:,0]) *
+        (boxes1[:,3] - boxes1[:,1])
+    )
+    area2 = (
+        (boxes2[:,2] - boxes2[:,0]) *
+        (boxes2[:,3] - boxes2[:,1])
+    )
+    union = area1 + area2 - inter
+    iou = inter / (union + EPS)
+    cx1 = torch.min(boxes1[:,0], boxes2[:,0])
+    cy1 = torch.min(boxes1[:,1], boxes2[:,1])
+    cx2 = torch.max(boxes1[:,2], boxes2[:,2])
+    cy2 = torch.max(boxes1[:,3], boxes2[:,3])
+    c_area = (
+        (cx2 - cx1) *
+        (cy2 - cy1)
+    )
+    giou = iou - (
+        (c_area - union) /
+        (c_area + EPS)
+    )
+
+    return giou
+
+# =========================================================
 # LOSS
 # =========================================================
 class VistaDETRLoss(nn.Module):
     def __init__(self):
         super().__init__()
+        self.cls_loss = nn.CrossEntropyLoss()
 
     def forward(
         self,
         outputs,
-        targets
+        targets,
+        staticness_gt
     ):
-        logits = outputs["pred_logits"]
-        boxes = outputs["pred_boxes"]
-        staticness = outputs["staticness"]
-        cls_loss = torch.mean(
-            logits ** 2
-        )
-        bbox_loss = torch.mean(
-            boxes ** 2
-        )
-        static_loss = 0.0
-        for b in range(len(targets)):
-            gt_static = torch.ones_like(
-                staticness[b]
+        pred_logits = outputs["pred_logits"]
+        pred_boxes = outputs["pred_boxes"]
+        pred_staticness = outputs["staticness"]
+        B = pred_logits.shape[0]
+        total_cls = 0.0
+        total_bbox = 0.0
+        total_giou = 0.0
+        total_static = 0.0
+        for b in range(B):
+            tgt = targets[b]
+            tgt_boxes = tgt[:,1:5].to(
+                pred_boxes.device
             )
-            static_loss += F.binary_cross_entropy(
-                staticness[b],
+            num_tgt = min(
+                tgt_boxes.shape[0],
+                NUM_QUERIES
+            )
+            if num_tgt == 0:
+                continue
+            cls_target = torch.zeros(
+                NUM_QUERIES,
+                dtype=torch.long,
+                device=pred_logits.device
+            )
+            cls_target[:num_tgt] = 1
+            total_cls += self.cls_loss(
+                pred_logits[b],
+                cls_target
+            )
+            pred_b = pred_boxes[b,:num_tgt]
+            total_bbox += F.l1_loss(
+                pred_b,
+                tgt_boxes[:num_tgt]
+            )
+            pxy = box_cxcywh_to_xyxy(pred_b)
+            gxy = box_cxcywh_to_xyxy(
+                tgt_boxes[:num_tgt]
+            )
+            giou = generalized_iou(
+                pxy,
+                gxy
+            )
+            total_giou += (
+                1.0 - giou.mean()
+            )
+            gt_static = staticness_gt[b].mean().to(
+                pred_staticness.device
+            )
+            total_static += F.mse_loss(
+                pred_staticness[b].mean(),
                 gt_static
             )
         total = (
-            1.0 * cls_loss +
-            2.0 * bbox_loss +
-            0.5 * static_loss
+            1.0 * total_cls +
+            5.0 * total_bbox +
+            2.0 * total_giou +
+            0.5 * total_static
         )
+
         return total
 
 # =========================================================
 # DATASETS
 # =========================================================
-train_dataset = VistaMotionDETRDataset(
+train_dataset = VistaDETRDataset(
     TRAIN_PATH,
     train_transform
 )
 
-test_dataset = VistaMotionDETRDataset(
+test_dataset = VistaDETRDataset(
     TEST_PATH,
     test_transform
 )
@@ -611,7 +744,7 @@ train_loader = DataLoader(
     batch_size=BATCH_SIZE,
     shuffle=True,
     collate_fn=collate_fn,
-    num_workers=4,
+    num_workers=2,
     pin_memory=True
 )
 
@@ -620,19 +753,23 @@ test_loader = DataLoader(
     batch_size=BATCH_SIZE,
     shuffle=False,
     collate_fn=collate_fn,
-    num_workers=4,
+    num_workers=2,
     pin_memory=True
 )
 
 # =========================================================
 # MODEL
 # =========================================================
-model = VISTA_MOTION_DETR().to(DEVICE)
+model = VISTA_DETR().to(DEVICE)
 optimizer = torch.optim.AdamW(
-    model.parameters(),
+    filter(
+        lambda p: p.requires_grad,
+        model.parameters()
+    ),
     lr=LR,
     weight_decay=1e-4
 )
+
 criterion = VistaDETRLoss()
 
 # =========================================================
@@ -641,7 +778,7 @@ criterion = VistaDETRLoss()
 def train_one_epoch():
     model.train()
     total_loss = 0.0
-    for img, prev, flow, motion, target in train_loader:
+    for img, prev, flow, motion, target, static_gt in train_loader:
         img = img.to(DEVICE)
         flow = flow.to(DEVICE)
         motion = [
@@ -655,12 +792,14 @@ def train_one_epoch():
         )
         loss = criterion(
             outputs,
-            target
+            target,
+            static_gt
         )
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
+
     return total_loss / len(train_loader)
 
 # =========================================================
@@ -671,7 +810,7 @@ def evaluate():
     total_loss = 0.0
     staticness_mean = 0.0
     with torch.no_grad():
-        for img, prev, flow, motion, target in test_loader:
+        for img, prev, flow, motion, target, static_gt in test_loader:
             img = img.to(DEVICE)
             flow = flow.to(DEVICE)
             motion = [
@@ -685,7 +824,8 @@ def evaluate():
             )
             loss = criterion(
                 outputs,
-                target
+                target,
+                static_gt
             )
             total_loss += loss.item()
             staticness_mean += (
@@ -695,12 +835,13 @@ def evaluate():
             )
     total_loss /= len(test_loader)
     staticness_mean /= len(test_loader)
+
     return total_loss, staticness_mean
 
 # =========================================================
-# MAIN TRAINING
+# MAIN
 # =========================================================
-print("=== TRAINING VISTA MOTION DETR ===")
+print("=== TRAINING VISTADETR ===")
 best_test_loss = 999999
 for epoch in range(EPOCHS):
     start = time.time()
@@ -727,4 +868,5 @@ for epoch in range(EPOCHS):
             f"Best model saved: "
             f"{MODEL_SAVE_PATH}"
         )
+
 print("=== TRAINING FINISHED ===")
