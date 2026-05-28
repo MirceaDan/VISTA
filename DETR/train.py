@@ -32,7 +32,6 @@ D_MODEL = 256
 NHEADS = 8
 NUM_ENCODER_LAYERS = 3
 NUM_DECODER_LAYERS = 3
-FLOW_ALPHA = 0.35
 STATICNESS_LAMBDA = 5.0
 DATASET_PATH = "./dataset"
 TRAIN_PATH = os.path.join(
@@ -264,9 +263,13 @@ class VistaDETRDataset(Dataset):
             )
             staticness_gt.append([s])
 
-        motion_features = torch.tensor(
+        motion_features = np.array(
             motion_features,
-            dtype=torch.float32
+            dtype=np.float32
+        )
+
+        motion_features = torch.from_numpy(
+            motion_features
         )
         targets = torch.tensor(
             targets,
@@ -371,9 +374,13 @@ class FlowAttentionFusion(nn.Module):
     def __init__(
         self,
         feat_channels=512,
-        flow_channels=256
+        flow_channels=256,
+        flow_alpha=0.3
     ):
         super().__init__()
+
+        self.flow_alpha = flow_alpha
+
         self.flow_proj = nn.Conv2d(
             flow_channels,
             feat_channels,
@@ -401,7 +408,7 @@ class FlowAttentionFusion(nn.Module):
         )
         flow = self.flow_proj(flow)
         A = self.attn(flow)
-        feat = feat + FLOW_ALPHA * feat * A
+        feat = feat + self.flow_alpha * feat * A
         return feat
 
 # =========================================================
@@ -744,7 +751,7 @@ train_loader = DataLoader(
     batch_size=BATCH_SIZE,
     shuffle=True,
     collate_fn=collate_fn,
-    num_workers=2,
+    num_workers=0,
     pin_memory=True
 )
 
@@ -753,7 +760,7 @@ test_loader = DataLoader(
     batch_size=BATCH_SIZE,
     shuffle=False,
     collate_fn=collate_fn,
-    num_workers=2,
+    num_workers=0,
     pin_memory=True
 )
 
