@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-project(intrudernet_inference LANGUAGES CXX)
+project(vista_inference LANGUAGES CXX)
 
 # =========================
 # Compiler settings
@@ -38,7 +38,7 @@ message(STATUS "Found Torch")
 # Executable
 # =========================
 if (TEST_MODE)    
-    add_executable(intrudernet_test
+    add_executable(vista_test
         src/main.cpp
         inference/inference.cpp
         test/test.cpp
@@ -47,14 +47,14 @@ if (TEST_MODE)
     # =========================
     # Include paths
     # =========================
-    target_include_directories(intrudernet_test PRIVATE
+    target_include_directories(vista_test PRIVATE
         ${OpenCV_INCLUDE_DIRS}
     )
 
     # =========================
     # Link libraries
     # =========================
-    target_link_libraries(intrudernet_test
+    target_link_libraries(vista_test
         ${OpenCV_LIBS}
         ${TORCH_LIBRARIES}
         jsoncpp
@@ -63,22 +63,22 @@ if (TEST_MODE)
     # =========================
     # Torch compile flags
     # =========================
-    set_property(TARGET intrudernet_test PROPERTY CXX_STANDARD 17)
+    set_property(TARGET vista_test PROPERTY CXX_STANDARD 17)
 
     # Fix for Raspberry Pi + GCC
-    target_compile_definitions(intrudernet_test PRIVATE
+    target_compile_definitions(vista_test PRIVATE
         -D_GLIBCXX_USE_CXX11_ABI=1
     )
 
     # =========================
     # RPATH (important on Pi)
     # =========================
-    set_target_properties(intrudernet_test PROPERTIES
+    set_target_properties(vista_test PROPERTIES
     BUILD_RPATH "$ORIGIN"
     INSTALL_RPATH "$ORIGIN"
     )
 else()
-    add_executable(intrudernet
+    add_executable(vista
         src/main.cpp
         inference/inference.cpp
     )
@@ -86,14 +86,14 @@ else()
     # =========================
     # Include paths
     # =========================
-    target_include_directories(intrudernet PRIVATE
+    target_include_directories(vista PRIVATE
         ${OpenCV_INCLUDE_DIRS}
     )
 
     # =========================
     # Link libraries
     # =========================
-    target_link_libraries(intrudernet
+    target_link_libraries(vista
         ${OpenCV_LIBS}
         ${TORCH_LIBRARIES}
         jsoncpp
@@ -102,17 +102,17 @@ else()
     # =========================
     # Torch compile flags
     # =========================
-    set_property(TARGET intrudernet PROPERTY CXX_STANDARD 17)
+    set_property(TARGET vista PROPERTY CXX_STANDARD 17)
 
     # Fix for Raspberry Pi + GCC
-    target_compile_definitions(intrudernet PRIVATE
+    target_compile_definitions(vista PRIVATE
         -D_GLIBCXX_USE_CXX11_ABI=1
     )
 
     # =========================
     # RPATH (important on Pi)
     # =========================
-    set_target_properties(intrudernet PROPERTIES
+    set_target_properties(vista PROPERTIES
     BUILD_RPATH "$ORIGIN"
     INSTALL_RPATH "$ORIGIN"
     )

@@ -1,4 +1,4 @@
-/*intrudernet_inference/
+/*vista_inference/
 ├── CMakeLists.txt
 ├── inference/
 │   ├── inference.h
@@ -88,7 +88,7 @@ std::string getCurrentTimestamp()
 
 std::string getBaseImagePath()
 {
-    std::filesystem::path basePath = "/home/mircea/Desktop/IntruderNet/images";
+    std::filesystem::path basePath = "/home/mircea/Desktop/vista/images";
 
     std::filesystem::create_directories(basePath / "rabbit");
     std::filesystem::create_directories(basePath / "not_rabbit");
