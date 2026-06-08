@@ -116,97 +116,62 @@ torch::Tensor InferenceEngine::computeOpticalFlow(
     return tensor.clone();
 }
 
-std::vector<Detection> InferenceEngine::run(
-    const cv::Mat& currentFrame,
-    const cv::Mat& previousFrame
-)
+std::vector<Detection> InferenceEngine::run(const cv::Mat& currentFrame, const cv::Mat& previousFrame)
 {
     if(currentFrame.empty())
-        throw std::runtime_error(
-            "Current frame empty"
-        );
+    {
+        throw std::runtime_error("Current frame empty");
+    }
 
     if(previousFrame.empty())
-        throw std::runtime_error(
-            "Previous frame empty"
-        );
+    {
+        throw std::runtime_error("Previous frame empty");
+    }
 
-    torch::Tensor imageTensor =
-        preprocessImage(currentFrame);
+    torch::Tensor imageTensor = preprocessImage(currentFrame);
 
-    torch::Tensor flowTensor =
-        computeOpticalFlow(
-            currentFrame,
-            previousFrame
-        );
+    torch::Tensor flowTensor = computeOpticalFlow(currentFrame, previousFrame);
 
-    // dummy motion features
-    torch::Tensor motionTensor =
-        torch::zeros({1,1,7});
-
+    // Shape expected by TorchScript:
+    // [B, MAX_OBJECTS, 7]
+    // B = 1
+    torch::Tensor motionTensor = torch::zeros({1,64,7}, torch::kFloat32);
     std::vector<torch::jit::IValue> inputs;
 
     inputs.push_back(imageTensor);
     inputs.push_back(flowTensor);
-    inputs.push_back(
-        std::vector<torch::Tensor>{
-            motionTensor
-        }
-    );
 
-    auto output =
-        model.forward(inputs).toGenericDict();
-
-    torch::Tensor logits =
-        output.at("pred_logits").toTensor();
-
-    torch::Tensor boxes =
-        output.at("pred_boxes").toTensor();
-
-    torch::Tensor staticness =
-        output.at("staticness").toTensor();
+    // Tensor, NOT List<Tensor>
+    inputs.push_back(motionTensor);
+    auto output = model.forward(inputs).toGenericDict();
+    torch::Tensor logits =  output.at("pred_logits").toTensor();
+    torch::Tensor boxes = output.at("pred_boxes").toTensor();
+    torch::Tensor staticness = output.at("staticness").toTensor();
 
     logits = logits.squeeze(0);
     boxes = boxes.squeeze(0);
-
-    float staticScore =
-        staticness.item<float>();
-
+    float staticScore = staticness.mean().item<float>();
     std::vector<Detection> detections;
-
-    for(int i=0;i<logits.size(0);i++)
+    const int numQueries = static_cast<int>(logits.size(0));
+    for(int i = 0; i < numQueries; i++)
     {
-        auto cls =
-            torch::softmax(
-                logits[i],
-                -1
-            );
-
-        float score =
-            cls[0].item<float>();
-
+        auto probs = torch::softmax(logits[i], -1);
+        // DETR:
+        // class 0 = beacon
+        // class 1 = no-object
+        float score = probs[0].item<float>();
         if(score < 0.5f)
+        {
             continue;
+        }
 
         Detection det;
-
         det.score = score;
-
-        det.cx =
-            boxes[i][0].item<float>();
-
-        det.cy =
-            boxes[i][1].item<float>();
-
-        det.w =
-            boxes[i][2].item<float>();
-
-        det.h =
-            boxes[i][3].item<float>();
-
-        det.staticness =
-            staticScore;
-
+        det.cx = boxes[i][0].item<float>();
+        det.cy = boxes[i][1].item<float>();
+        det.w = boxes[i][2].item<float>();
+        det.h = boxes[i][3].item<float>();
+        det.staticness = staticScore;
         detections.push_back(det);
     }
 

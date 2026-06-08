@@ -191,7 +191,7 @@ int main() {
 #include "../test/test.hpp"
 int main()
 {
-    std::string data_path = "test/test_data/";
+    std::string data_path = "/home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/";
     Test test;
     test.runStressTest(data_path);
 }

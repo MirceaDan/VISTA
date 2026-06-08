@@ -1,0 +1,234 @@
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_22_20.Still011.jpg
+Inference: 13950.5 ms
+Detections: 17
+  DET 0 score=0.616674 staticness=0.505495 box=(0.371958, 0.51066, 0.218329, 0.151247)
+  DET 1 score=0.937955 staticness=0.505495 box=(0.414359, 0.529576, 0.253265, 0.171213)
+  DET 2 score=0.882501 staticness=0.505495 box=(0.387393, 0.525394, 0.244251, 0.173212)
+  DET 3 score=0.897326 staticness=0.505495 box=(0.434342, 0.549556, 0.221425, 0.171102)
+  DET 4 score=0.930626 staticness=0.505495 box=(0.42477, 0.525758, 0.265988, 0.193966)
+  DET 5 score=0.934884 staticness=0.505495 box=(0.444438, 0.539358, 0.250696, 0.176947)
+  DET 6 score=0.894014 staticness=0.505495 box=(0.443489, 0.539907, 0.242602, 0.160943)
+  DET 7 score=0.948566 staticness=0.505495 box=(0.455469, 0.535294, 0.278064, 0.216495)
+  DET 8 score=0.923101 staticness=0.505495 box=(0.453286, 0.548649, 0.254118, 0.19227)
+  DET 9 score=0.945494 staticness=0.505495 box=(0.449224, 0.548957, 0.252668, 0.191706)
+  DET 10 score=0.887675 staticness=0.505495 box=(0.455003, 0.539091, 0.228223, 0.174329)
+  DET 11 score=0.967869 staticness=0.505495 box=(0.446842, 0.533921, 0.264946, 0.197807)
+  DET 12 score=0.96788 staticness=0.505495 box=(0.448651, 0.558891, 0.279636, 0.215311)
+  DET 13 score=0.97673 staticness=0.505495 box=(0.461397, 0.564625, 0.266084, 0.225924)
+  DET 14 score=0.973056 staticness=0.505495 box=(0.440514, 0.523887, 0.305294, 0.209049)
+  DET 15 score=0.974769 staticness=0.505495 box=(0.441406, 0.527823, 0.287854, 0.211187)
+  DET 16 score=0.962055 staticness=0.505495 box=(0.461508, 0.530083, 0.296457, 0.227924)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_31_15.Still012.jpg
+Inference: 12494.6 ms
+Detections: 17
+  DET 0 score=0.720859 staticness=0.505495 box=(0.395235, 0.520846, 0.216353, 0.148691)
+  DET 1 score=0.9513 staticness=0.505495 box=(0.427777, 0.524892, 0.24773, 0.167146)
+  DET 2 score=0.913754 staticness=0.505495 box=(0.405513, 0.528905, 0.235701, 0.161787)
+  DET 3 score=0.923489 staticness=0.505495 box=(0.442851, 0.545804, 0.218787, 0.158767)
+  DET 4 score=0.948627 staticness=0.505495 box=(0.444923, 0.5329, 0.259794, 0.192604)
+  DET 5 score=0.948415 staticness=0.505495 box=(0.456714, 0.539688, 0.24695, 0.17689)
+  DET 6 score=0.911912 staticness=0.505495 box=(0.453494, 0.535268, 0.243229, 0.159099)
+  DET 7 score=0.957804 staticness=0.505495 box=(0.467345, 0.539422, 0.273971, 0.202175)
+  DET 8 score=0.931849 staticness=0.505495 box=(0.466977, 0.552418, 0.245929, 0.185095)
+  DET 9 score=0.954854 staticness=0.505495 box=(0.459447, 0.543461, 0.250103, 0.18295)
+  DET 10 score=0.913729 staticness=0.505495 box=(0.474073, 0.544898, 0.22411, 0.171228)
+  DET 11 score=0.970517 staticness=0.505495 box=(0.469162, 0.533717, 0.263559, 0.191878)
+  DET 12 score=0.972261 staticness=0.505495 box=(0.458644, 0.553876, 0.271422, 0.204423)
+  DET 13 score=0.978044 staticness=0.505495 box=(0.473771, 0.562894, 0.25777, 0.217736)
+  DET 14 score=0.974996 staticness=0.505495 box=(0.453725, 0.52245, 0.300968, 0.204849)
+  DET 15 score=0.977195 staticness=0.505495 box=(0.45703, 0.534944, 0.278528, 0.204268)
+  DET 16 score=0.966285 staticness=0.505495 box=(0.465904, 0.533707, 0.292058, 0.223164)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_33_05.Still013.jpg
+Inference: 9996.5 ms
+Detections: 17
+  DET 0 score=0.598311 staticness=0.505495 box=(0.377018, 0.504627, 0.218873, 0.149091)
+  DET 1 score=0.932827 staticness=0.505495 box=(0.408098, 0.515428, 0.254061, 0.170036)
+  DET 2 score=0.866426 staticness=0.505495 box=(0.389445, 0.514584, 0.247627, 0.175632)
+  DET 3 score=0.88957 staticness=0.505495 box=(0.425213, 0.533391, 0.219488, 0.166177)
+  DET 4 score=0.921557 staticness=0.505495 box=(0.421934, 0.513831, 0.264859, 0.192717)
+  DET 5 score=0.923189 staticness=0.505495 box=(0.437931, 0.526321, 0.250957, 0.180093)
+  DET 6 score=0.874724 staticness=0.505495 box=(0.437952, 0.524829, 0.247339, 0.157371)
+  DET 7 score=0.936973 staticness=0.505495 box=(0.447806, 0.52567, 0.279687, 0.216973)
+  DET 8 score=0.912137 staticness=0.505495 box=(0.449595, 0.540662, 0.248465, 0.184786)
+  DET 9 score=0.941908 staticness=0.505495 box=(0.451551, 0.531113, 0.255619, 0.186076)
+  DET 10 score=0.871457 staticness=0.505495 box=(0.451075, 0.529493, 0.227921, 0.172602)
+  DET 11 score=0.962187 staticness=0.505495 box=(0.44637, 0.521611, 0.261128, 0.193427)
+  DET 12 score=0.965159 staticness=0.505495 box=(0.449101, 0.546796, 0.275461, 0.209684)
+  DET 13 score=0.974937 staticness=0.505495 box=(0.459248, 0.556079, 0.266765, 0.220228)
+  DET 14 score=0.96929 staticness=0.505495 box=(0.44181, 0.513417, 0.310214, 0.207808)
+  DET 15 score=0.971773 staticness=0.505495 box=(0.438226, 0.518676, 0.288751, 0.207051)
+  DET 16 score=0.960916 staticness=0.505495 box=(0.456843, 0.517353, 0.301365, 0.225755)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_37_02.Still014.jpg
+Inference: 10242.4 ms
+Detections: 17
+  DET 0 score=0.679702 staticness=0.505495 box=(0.372764, 0.5129, 0.217338, 0.151873)
+  DET 1 score=0.936484 staticness=0.505495 box=(0.41026, 0.522902, 0.25028, 0.169695)
+  DET 2 score=0.892055 staticness=0.505495 box=(0.383897, 0.520703, 0.245031, 0.16495)
+  DET 3 score=0.902548 staticness=0.505495 box=(0.42519, 0.538003, 0.218928, 0.161285)
+  DET 4 score=0.934808 staticness=0.505495 box=(0.421354, 0.522741, 0.26367, 0.19253)
+  DET 5 score=0.936433 staticness=0.505495 box=(0.433907, 0.533837, 0.251172, 0.179511)
+  DET 6 score=0.891367 staticness=0.505495 box=(0.439409, 0.533564, 0.243585, 0.158717)
+  DET 7 score=0.946912 staticness=0.505495 box=(0.443923, 0.529542, 0.276404, 0.203656)
+  DET 8 score=0.920938 staticness=0.505495 box=(0.44695, 0.544064, 0.246211, 0.181471)
+  DET 9 score=0.945093 staticness=0.505495 box=(0.444902, 0.537801, 0.250118, 0.179943)
+  DET 10 score=0.897828 staticness=0.505495 box=(0.4491, 0.533406, 0.226467, 0.171074)
+  DET 11 score=0.967482 staticness=0.505495 box=(0.445217, 0.533149, 0.260299, 0.188878)
+  DET 12 score=0.969749 staticness=0.505495 box=(0.44033, 0.55063, 0.26753, 0.199979)
+  DET 13 score=0.974679 staticness=0.505495 box=(0.463653, 0.556901, 0.261026, 0.218145)
+  DET 14 score=0.969092 staticness=0.505495 box=(0.436814, 0.518661, 0.301165, 0.200975)
+  DET 15 score=0.972639 staticness=0.505495 box=(0.436936, 0.526965, 0.277981, 0.200797)
+  DET 16 score=0.962771 staticness=0.505495 box=(0.45201, 0.520666, 0.293205, 0.221318)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_42_06.Still015.jpg
+Inference: 10055 ms
+Detections: 17
+  DET 0 score=0.752243 staticness=0.505495 box=(0.390184, 0.514881, 0.22626, 0.157271)
+  DET 1 score=0.951506 staticness=0.505495 box=(0.424872, 0.516021, 0.265011, 0.179226)
+  DET 2 score=0.927147 staticness=0.505495 box=(0.401257, 0.519788, 0.255444, 0.177633)
+  DET 3 score=0.928731 staticness=0.505495 box=(0.430956, 0.538394, 0.2323, 0.172473)
+  DET 4 score=0.949102 staticness=0.505495 box=(0.429223, 0.520993, 0.279163, 0.207716)
+  DET 5 score=0.950681 staticness=0.505495 box=(0.452011, 0.528554, 0.26302, 0.187306)
+  DET 6 score=0.921049 staticness=0.505495 box=(0.449601, 0.531938, 0.260218, 0.172847)
+  DET 7 score=0.962836 staticness=0.505495 box=(0.459038, 0.529872, 0.285539, 0.216952)
+  DET 8 score=0.940319 staticness=0.505495 box=(0.460555, 0.545129, 0.262171, 0.197679)
+  DET 9 score=0.959265 staticness=0.505495 box=(0.452116, 0.534823, 0.267843, 0.197335)
+  DET 10 score=0.921765 staticness=0.505495 box=(0.46403, 0.541362, 0.237197, 0.183706)
+  DET 11 score=0.97301 staticness=0.505495 box=(0.460032, 0.525909, 0.277005, 0.201798)
+  DET 12 score=0.975295 staticness=0.505495 box=(0.454272, 0.546987, 0.285511, 0.217075)
+  DET 13 score=0.980849 staticness=0.505495 box=(0.467717, 0.558404, 0.272378, 0.229624)
+  DET 14 score=0.976455 staticness=0.505495 box=(0.453498, 0.509968, 0.31886, 0.217873)
+  DET 15 score=0.979112 staticness=0.505495 box=(0.447182, 0.523747, 0.301671, 0.220273)
+  DET 16 score=0.970231 staticness=0.505495 box=(0.455028, 0.524574, 0.308292, 0.236489)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_47_13.Still016.jpg
+Inference: 10856.1 ms
+Detections: 17
+  DET 0 score=0.643872 staticness=0.505495 box=(0.376306, 0.525314, 0.215512, 0.156131)
+  DET 1 score=0.932921 staticness=0.505495 box=(0.407382, 0.533028, 0.247057, 0.170995)
+  DET 2 score=0.864082 staticness=0.505495 box=(0.388879, 0.534236, 0.236486, 0.173664)
+  DET 3 score=0.894422 staticness=0.505495 box=(0.429009, 0.558847, 0.218429, 0.166997)
+  DET 4 score=0.927848 staticness=0.505495 box=(0.432711, 0.540124, 0.264787, 0.202197)
+  DET 5 score=0.930551 staticness=0.505495 box=(0.441602, 0.550941, 0.245976, 0.180809)
+  DET 6 score=0.882632 staticness=0.505495 box=(0.445469, 0.54945, 0.241454, 0.163102)
+  DET 7 score=0.947348 staticness=0.505495 box=(0.4542, 0.548385, 0.272962, 0.206603)
+  DET 8 score=0.913239 staticness=0.505495 box=(0.458144, 0.55163, 0.258476, 0.191241)
+  DET 9 score=0.942701 staticness=0.505495 box=(0.444317, 0.551965, 0.251573, 0.188372)
+  DET 10 score=0.875055 staticness=0.505495 box=(0.457552, 0.550217, 0.221245, 0.170526)
+  DET 11 score=0.964579 staticness=0.505495 box=(0.452385, 0.536552, 0.261865, 0.20219)
+  DET 12 score=0.965457 staticness=0.505495 box=(0.45276, 0.564793, 0.272729, 0.210145)
+  DET 13 score=0.97492 staticness=0.505495 box=(0.468368, 0.56758, 0.263152, 0.224924)
+  DET 14 score=0.9711 staticness=0.505495 box=(0.445225, 0.532992, 0.308012, 0.211815)
+  DET 15 score=0.972339 staticness=0.505495 box=(0.440699, 0.536641, 0.284247, 0.209171)
+  DET 16 score=0.959908 staticness=0.505495 box=(0.460769, 0.541335, 0.292382, 0.226864)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_32_55_17.Still017.jpg
+Inference: 9788.58 ms
+Detections: 17
+  DET 0 score=0.594828 staticness=0.505495 box=(0.38716, 0.501504, 0.221175, 0.150263)
+  DET 1 score=0.93276 staticness=0.505495 box=(0.419415, 0.516067, 0.254209, 0.175877)
+  DET 2 score=0.878807 staticness=0.505495 box=(0.396486, 0.51576, 0.254102, 0.186705)
+  DET 3 score=0.891684 staticness=0.505495 box=(0.435134, 0.537494, 0.227457, 0.174415)
+  DET 4 score=0.929991 staticness=0.505495 box=(0.435001, 0.520111, 0.270459, 0.206594)
+  DET 5 score=0.926391 staticness=0.505495 box=(0.452442, 0.529656, 0.251812, 0.187327)
+  DET 6 score=0.888725 staticness=0.505495 box=(0.444394, 0.532982, 0.249143, 0.169073)
+  DET 7 score=0.94646 staticness=0.505495 box=(0.46254, 0.523349, 0.288865, 0.227427)
+  DET 8 score=0.913035 staticness=0.505495 box=(0.461848, 0.546213, 0.253057, 0.197767)
+  DET 9 score=0.943236 staticness=0.505495 box=(0.450107, 0.537025, 0.261478, 0.197907)
+  DET 10 score=0.879141 staticness=0.505495 box=(0.463435, 0.53226, 0.231562, 0.174961)
+  DET 11 score=0.965383 staticness=0.505495 box=(0.459987, 0.523424, 0.265283, 0.200245)
+  DET 12 score=0.967073 staticness=0.505495 box=(0.461764, 0.552528, 0.28198, 0.218672)
+  DET 13 score=0.975579 staticness=0.505495 box=(0.464964, 0.558935, 0.268674, 0.229887)
+  DET 14 score=0.973088 staticness=0.505495 box=(0.44897, 0.511458, 0.317323, 0.21742)
+  DET 15 score=0.972004 staticness=0.505495 box=(0.449624, 0.521886, 0.290601, 0.215244)
+  DET 16 score=0.958413 staticness=0.505495 box=(0.467097, 0.524126, 0.304233, 0.236668)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_33_01_07.Still018.jpg
+Inference: 9686.68 ms
+Detections: 17
+  DET 0 score=0.575855 staticness=0.505495 box=(0.380383, 0.516496, 0.219796, 0.152419)
+  DET 1 score=0.93208 staticness=0.505495 box=(0.41801, 0.528696, 0.252309, 0.17354)
+  DET 2 score=0.864253 staticness=0.505495 box=(0.388625, 0.530316, 0.24248, 0.17642)
+  DET 3 score=0.886716 staticness=0.505495 box=(0.430214, 0.539016, 0.223155, 0.170491)
+  DET 4 score=0.923726 staticness=0.505495 box=(0.433591, 0.525226, 0.264311, 0.200491)
+  DET 5 score=0.918988 staticness=0.505495 box=(0.449055, 0.533706, 0.246678, 0.181047)
+  DET 6 score=0.867444 staticness=0.505495 box=(0.443458, 0.535415, 0.244044, 0.162623)
+  DET 7 score=0.938513 staticness=0.505495 box=(0.455033, 0.535334, 0.278827, 0.219739)
+  DET 8 score=0.900391 staticness=0.505495 box=(0.458475, 0.547829, 0.248178, 0.193947)
+  DET 9 score=0.937492 staticness=0.505495 box=(0.449309, 0.543728, 0.248588, 0.189352)
+  DET 10 score=0.870604 staticness=0.505495 box=(0.45994, 0.533921, 0.225312, 0.172494)
+  DET 11 score=0.960327 staticness=0.505495 box=(0.455873, 0.534619, 0.261819, 0.198366)
+  DET 12 score=0.96427 staticness=0.505495 box=(0.455522, 0.555902, 0.273775, 0.21189)
+  DET 13 score=0.97435 staticness=0.505495 box=(0.465018, 0.561113, 0.263301, 0.228368)
+  DET 14 score=0.970069 staticness=0.505495 box=(0.446568, 0.519309, 0.312414, 0.210492)
+  DET 15 score=0.970944 staticness=0.505495 box=(0.444657, 0.527514, 0.28109, 0.208295)
+  DET 16 score=0.956723 staticness=0.505495 box=(0.462623, 0.53092, 0.293164, 0.230851)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_33_10_11.Still019.jpg
+Inference: 10091.9 ms
+Detections: 16
+  DET 0 score=0.800994 staticness=0.505495 box=(0.383976, 0.533173, 0.245507, 0.161976)
+  DET 1 score=0.603901 staticness=0.505495 box=(0.349907, 0.526531, 0.25148, 0.167322)
+  DET 2 score=0.690642 staticness=0.505495 box=(0.401865, 0.542042, 0.217402, 0.151213)
+  DET 3 score=0.769193 staticness=0.505495 box=(0.39811, 0.525576, 0.25753, 0.183463)
+  DET 4 score=0.783906 staticness=0.505495 box=(0.408687, 0.539929, 0.253525, 0.168404)
+  DET 5 score=0.646564 staticness=0.505495 box=(0.415195, 0.534848, 0.241656, 0.149676)
+  DET 6 score=0.816581 staticness=0.505495 box=(0.419105, 0.535428, 0.280134, 0.192478)
+  DET 7 score=0.725969 staticness=0.505495 box=(0.419024, 0.544833, 0.244682, 0.17259)
+  DET 8 score=0.804778 staticness=0.505495 box=(0.419876, 0.550297, 0.242128, 0.173212)
+  DET 9 score=0.653487 staticness=0.505495 box=(0.41598, 0.533841, 0.229298, 0.16489)
+  DET 10 score=0.901985 staticness=0.505495 box=(0.417887, 0.543076, 0.253, 0.17904)
+  DET 11 score=0.908876 staticness=0.505495 box=(0.417568, 0.555566, 0.261111, 0.187584)
+  DET 12 score=0.945381 staticness=0.505495 box=(0.449246, 0.558875, 0.250635, 0.208303)
+  DET 13 score=0.918653 staticness=0.505495 box=(0.410638, 0.518682, 0.305767, 0.199079)
+  DET 14 score=0.938997 staticness=0.505495 box=(0.403611, 0.521249, 0.265106, 0.187267)
+  DET 15 score=0.883214 staticness=0.505495 box=(0.43712, 0.523391, 0.282458, 0.212179)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_33_16_02.Still020.jpg
+Inference: 10116.6 ms
+Detections: 16
+  DET 0 score=0.729229 staticness=0.505495 box=(0.34998, 0.525265, 0.237596, 0.149911)
+  DET 1 score=0.505905 staticness=0.505495 box=(0.321704, 0.515089, 0.246771, 0.159588)
+  DET 2 score=0.613842 staticness=0.505495 box=(0.375718, 0.541184, 0.219645, 0.152788)
+  DET 3 score=0.692568 staticness=0.505495 box=(0.370855, 0.525614, 0.252493, 0.175264)
+  DET 4 score=0.695787 staticness=0.505495 box=(0.37875, 0.532573, 0.243054, 0.157771)
+  DET 5 score=0.57077 staticness=0.505495 box=(0.377331, 0.530787, 0.239646, 0.142985)
+  DET 6 score=0.742523 staticness=0.505495 box=(0.386947, 0.534429, 0.26959, 0.183245)
+  DET 7 score=0.633435 staticness=0.505495 box=(0.391512, 0.535983, 0.24405, 0.168598)
+  DET 8 score=0.734599 staticness=0.505495 box=(0.388893, 0.543308, 0.234161, 0.165727)
+  DET 9 score=0.546804 staticness=0.505495 box=(0.38978, 0.535124, 0.220986, 0.154207)
+  DET 10 score=0.871593 staticness=0.505495 box=(0.385426, 0.536553, 0.24266, 0.170624)
+  DET 11 score=0.861717 staticness=0.505495 box=(0.383108, 0.550885, 0.254115, 0.178162)
+  DET 12 score=0.926073 staticness=0.505495 box=(0.414028, 0.56052, 0.247434, 0.193085)
+  DET 13 score=0.88812 staticness=0.505495 box=(0.376768, 0.520165, 0.293062, 0.180636)
+  DET 14 score=0.907536 staticness=0.505495 box=(0.371481, 0.524494, 0.258765, 0.177221)
+  DET 15 score=0.830785 staticness=0.505495 box=(0.412091, 0.529406, 0.2803, 0.200449)
+
+FRAME: /home/mircea/Desktop/VISTA/DETR/vista_inference/test/test_data/Snow overlay.00_34_09_21.Still022.jpg
+Inference: 10284.2 ms
+Detections: 17
+  DET 0 score=0.627898 staticness=0.505495 box=(0.368492, 0.501836, 0.221355, 0.153352)
+  DET 1 score=0.932377 staticness=0.505495 box=(0.400648, 0.518753, 0.251669, 0.175367)
+  DET 2 score=0.883907 staticness=0.505495 box=(0.380361, 0.522324, 0.247294, 0.177419)
+  DET 3 score=0.898881 staticness=0.505495 box=(0.423561, 0.537549, 0.221531, 0.167699)
+  DET 4 score=0.932673 staticness=0.505495 box=(0.42049, 0.516417, 0.272989, 0.20687)
+  DET 5 score=0.930532 staticness=0.505495 box=(0.443872, 0.531988, 0.248365, 0.178454)
+  DET 6 score=0.884652 staticness=0.505495 box=(0.439249, 0.531103, 0.248013, 0.164509)
+  DET 7 score=0.952948 staticness=0.505495 box=(0.450984, 0.526278, 0.282971, 0.216984)
+  DET 8 score=0.915096 staticness=0.505495 box=(0.449075, 0.541404, 0.250971, 0.188478)
+  DET 9 score=0.944407 staticness=0.505495 box=(0.441534, 0.537239, 0.257403, 0.19099)
+  DET 10 score=0.879933 staticness=0.505495 box=(0.448511, 0.532751, 0.226166, 0.173861)
+  DET 11 score=0.96737 staticness=0.505495 box=(0.448055, 0.530265, 0.264751, 0.195677)
+  DET 12 score=0.970442 staticness=0.505495 box=(0.449122, 0.549536, 0.282842, 0.213462)
+  DET 13 score=0.976227 staticness=0.505495 box=(0.462834, 0.559579, 0.265221, 0.230618)
+  DET 14 score=0.971933 staticness=0.505495 box=(0.44607, 0.512083, 0.314474, 0.210396)
+  DET 15 score=0.974056 staticness=0.505495 box=(0.441869, 0.525079, 0.284116, 0.209203)
+  DET 16 score=0.962127 staticness=0.505495 box=(0.455691, 0.528038, 0.295386, 0.236463)
+
+========================
+Avg inference: 10361.3 ms
+Total detections: 185
+Processed frames: 10
+========================
